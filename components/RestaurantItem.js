@@ -49,7 +49,7 @@ const ItemDetails = ({itemname, estimatedtime, rating}) => (
             <Text style={{ fontSize: 13, color: "gray" }}>{estimatedtime}</Text>
         </View>
         <View style={{ backgroundColor: "#eee", height: 30, width: 30, alignItems: "center", justifyContent: "center", borderRadius: 15, }}>
-            <Text>{rating}</Text>
+            <Text style={{fontWeight: "bold"}}>{rating}</Text>
         </View>
     </View>
 )
@@ -57,7 +57,7 @@ const ItemDetails = ({itemname, estimatedtime, rating}) => (
 export default function RestaurantItem({resturants}) {
     return (
         <>
-            {resturants.map((restaurant, index) => (
+            {resturants.map((restaurant) => (
                  /*style={{marginBottom: 5}}*/
                 <TouchableOpacity activeOpacity={1}>
                     <View style={styles.card}>
