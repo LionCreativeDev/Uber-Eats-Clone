@@ -37,9 +37,9 @@ export default function SearchBarNew(props) {
   // console.log("this is result==>", result);
 
   const handleSelection = (item) =>{
-    setSearch(item.city);
+    setSearch(item.formatted);
     setshowResults(false);
-    props.setSelected(item.city);
+    props.setSelected(item.formatted);
   }
 
   const getSearchSuggestions = async (text) => {
