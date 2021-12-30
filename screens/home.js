@@ -779,11 +779,11 @@ const YELP_API_KEY = "SZjlbAkznak-y7dD0oqcBwYNY5o3ca-N8jdXhF_yJdjtW5BP2CC7VT6OQn
 export default function Home() {
   ////const [resturants, setresturants] = useState(localRestaurants);
   //const [resturants, setresturants] = useState([]);
-  const [selected, setSelected] = useState("SanDiego");
+  const [selectedCity, setSelectedCity] = useState("SanDiego");
   const [resturants, setresturants] = useState(business);
 
   const getRestaurantsFromYelp = () => {
-    const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${selected}`;
+    const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${selectedCity}`;
 
     const apiOptions = {
       headers: {
@@ -792,18 +792,23 @@ export default function Home() {
       },
     };
 
-    return fetch(yelpUrl, apiOptions).then((res) => res.json()).then((json) => setresturants(json.businesses));
+    return fetch(yelpUrl, apiOptions).then((res) => res.json()).then((json) => {
+      if(json["businesses"] !== undefined && json["businesses"].length > 0)
+        setresturants(json.businesses);
+      else
+        setresturants([]);
+    });
   };
 
   useEffect(()=>{
     getRestaurantsFromYelp();
-  }, [selected])
+  }, [selectedCity])
 
   return (
     <SafeAreaView style={styles.homecontainer}>
       <View style={styles.optionholder}>
         <HeaderTabs />
-        <SearchBarNew setSelected={setSelected}/>
+        <SearchBarNew setSelectedCity={setSelectedCity}/>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
         <Categories />

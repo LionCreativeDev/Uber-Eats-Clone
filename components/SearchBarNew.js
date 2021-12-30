@@ -5,41 +5,60 @@ import { Text, View, TextInput, StyleSheet, FlatList, TouchableOpacity } from 'r
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-const searchResults = [
-  {
-    "description": "Chicago, IL, USA",
-    "id": "53eeb015d61056c54245a909c79862532fc953ad",
-    "place_id": "ChIJ7cv00DwsDogRAMDACa2m4K8",
-  },
-  {
-    "description": "China",
-    "id": "10bfe2265f06933baf8c2f1e35bf3bf132d74377",
-    "place_id": "ChIJwULG5WSOUDERbzafNHyqHZU",
-  },
-  {
-    "description": "Chihuahua, Mexico",
-    "id": "26f4ee675aa61f33dd0ffc296b582baf2e08fa3e",
-    "place_id": "ChIJM0BIXZ1E6oYRex3dBqen8bc",
-  },
-  {
-    "description": "Chile",
-    "id": "c33bb522167791f4bf271ef9151c1d13a1dd1092",
-    "place_id": "ChIJL68lBEHFYpYRHbkCERPhBQU",
-  }
-];
+// const searchResults = [
+//   {
+//     "description": "Chicago, IL, USA",
+//     "id": "53eeb015d61056c54245a909c79862532fc953ad",
+//     "place_id": "ChIJ7cv00DwsDogRAMDACa2m4K8",
+//   },
+//   {
+//     "description": "China",
+//     "id": "10bfe2265f06933baf8c2f1e35bf3bf132d74377",
+//     "place_id": "ChIJwULG5WSOUDERbzafNHyqHZU",
+//   },
+//   {
+//     "description": "Chihuahua, Mexico",
+//     "id": "26f4ee675aa61f33dd0ffc296b582baf2e08fa3e",
+//     "place_id": "ChIJM0BIXZ1E6oYRex3dBqen8bc",
+//   },
+//   {
+//     "description": "Chile",
+//     "id": "c33bb522167791f4bf271ef9151c1d13a1dd1092",
+//     "place_id": "ChIJL68lBEHFYpYRHbkCERPhBQU",
+//   }
+// ];
 
 export default function SearchBarNew(props) {
   const [search, setSearch] = useState();
-  const [result, setResults] = useState();
+  const [cityList, setCityList] = useState([]);
   const [showResults, setshowResults] = useState(false);
 
   //console.log("this is search==>", search);
-  // console.log("this is result==>", result);
+  // console.log("this is cityList==>", cityList);
 
   const handleSelection = (item) =>{
     setSearch(item.formatted);
     setshowResults(false);
-    props.setSelected(item.formatted);
+    props.setSelectedCity(item.formatted);
+  }
+
+  const clearSearch = () => {
+    if(search !== "" && cityList.length > 0){
+      setSearch("");
+      setshowResults(false);
+      setCityList([]);
+    }
+  }
+
+  const showCityList = () => {
+    //console.log("cityList==>", cityList);
+    if(search !== "" && cityList.length > 0 && !showResults){
+      setshowResults(true);
+    }
+    else if(search !== "" && cityList.length > 0 && showResults)
+    {
+      setshowResults(false);
+    }
   }
 
   const getSearchSuggestions = async (text) => {
@@ -48,10 +67,10 @@ export default function SearchBarNew(props) {
     if (text !== '') {
       let temp = [];
       fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${search}&apiKey=28cbce92d6654ceabb1cb7a55728a90c`).then((res) => res.json()).then((json) => {
-        //console.log("result==>", json["features"]);
+        //console.log("cityList==>", json["features"]);
 
         setshowResults(false);
-        setResults([]);
+        setCityList([]);
 
         if (json["features"].length > 0) {
           json["features"].map((feature) => {
@@ -59,7 +78,7 @@ export default function SearchBarNew(props) {
             temp.push({ "city": feature["properties"]["city"], "county": feature["properties"]["county"], "country": feature["properties"]["country"], "formatted": feature["properties"]["formatted"] })
           })
           setshowResults(true);
-          setResults(temp);
+          setCityList(temp);
         }
       });
     }
@@ -71,15 +90,15 @@ export default function SearchBarNew(props) {
           <Ionicons name="location-sharp" size={24} />
         </View>
         {/* <TextInput style={styles.input} onChangeText={onChangeText} value={text} /> */}
-        <TextInput style={{ borderRadius: 25, width: "100%", paddingLeft: 10 }} value={search} onChangeText={(text) => { getSearchSuggestions(text) }} showSoftInputOnFocus={true} />
-        <View style={{ flexDirection: "row", backgroundColor: "white", padding: 6, borderRadius: 30, alignItems: "center", marginLeft: 5, marginRight: 5 }}>
+        <TextInput style={{ borderRadius: 25, width: "100%", paddingLeft: 10 }} value={search || ""} onChangeText={(text) => { getSearchSuggestions(text) }} showSoftInputOnFocus={true} onTouchEnd={()=> showCityList()}/>
+        <TouchableOpacity style={{ flexDirection: "row", backgroundColor: "white", padding: 6, borderRadius: 30, alignItems: "center", marginLeft: 5, marginRight: 5 }} onPress={()=> clearSearch()}>
           <AntDesign name="clockcircle" size={11} style={{ marginRight: 6 }} />
           <Text>Search</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       {showResults && (
         <FlatList
-          data={result}
+          data={cityList}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
