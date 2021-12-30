@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Platform, StatusBar } from 'react-native';
 import HeaderTabs from '../components/HeaderTabs';
 import SearchBarNew from '../components/SearchBarNew';
 import Categories from "../components/Categories";
+import BottomTabs from '../components/BottomTabs';
 import RestaurantItem from "../components/RestaurantItem";
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -813,8 +814,9 @@ export default function Home() {
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
         <Categories />
-        <RestaurantItem resturants={resturants}/>
+        <RestaurantItem resturants={resturants}/>        
       </ScrollView>
+      <BottomTabs />
     </SafeAreaView>
   );
 }
@@ -823,6 +825,7 @@ const styles = StyleSheet.create({
   homecontainer: {
     flex: 1,
     backgroundColor: '#eee',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     /*alignItems: 'center',
     justifyContent: 'center',*/
   },
