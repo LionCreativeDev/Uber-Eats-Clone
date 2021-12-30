@@ -779,10 +779,11 @@ const YELP_API_KEY = "SZjlbAkznak-y7dD0oqcBwYNY5o3ca-N8jdXhF_yJdjtW5BP2CC7VT6OQn
 export default function Home() {
   ////const [resturants, setresturants] = useState(localRestaurants);
   //const [resturants, setresturants] = useState([]);
+  const [selected, setSelected] = useState("SanDiego");
   const [resturants, setresturants] = useState(business);
 
   const getRestaurantsFromYelp = () => {
-    const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=SanDiego`;
+    const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${selected}`;
 
     const apiOptions = {
       headers: {
@@ -795,14 +796,14 @@ export default function Home() {
   };
 
   useEffect(()=>{
-    //getRestaurantsFromYelp();
-  }, [])
+    getRestaurantsFromYelp();
+  }, [selected])
 
   return (
     <SafeAreaView style={styles.homecontainer}>
       <View style={styles.optionholder}>
         <HeaderTabs />
-        <SearchBarNew />
+        <SearchBarNew setSelected={setSelected}/>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
         <Categories />

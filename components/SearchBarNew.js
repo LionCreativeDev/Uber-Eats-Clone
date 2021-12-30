@@ -31,25 +31,34 @@ const searchResults = [
 export default function SearchBarNew(props) {
   const [search, setSearch] = useState();
   const [result, setResults] = useState();
+  const [showResults, setshowResults] = useState(false);
 
   //console.log("this is search==>", search);
   // console.log("this is result==>", result);
+
+  const handleSelection = (item) =>{
+    setSearch(item.city);
+    setshowResults(false);
+    props.setSelected(item.city);
+  }
 
   const getSearchSuggestions = async (text) => {
     setSearch(text);
 
     if (text !== '') {
       let temp = [];
-      fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&apiKey=28cbce92d6654ceabb1cb7a55728a90c`).then((res) => res.json()).then((json) => {
+      fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${search}&apiKey=28cbce92d6654ceabb1cb7a55728a90c`).then((res) => res.json()).then((json) => {
         //console.log("result==>", json["features"]);
 
-        setResults([]);       
+        setshowResults(false);
+        setResults([]);
 
         if (json["features"].length > 0) {
           json["features"].map((feature) => {
             //console.log(feature["properties"]["formatted"]);
             temp.push({ "city": feature["properties"]["city"], "county": feature["properties"]["county"], "country": feature["properties"]["country"], "formatted": feature["properties"]["formatted"] })
           })
+          setshowResults(true);
           setResults(temp);
         }
       });
@@ -62,45 +71,47 @@ export default function SearchBarNew(props) {
           <Ionicons name="location-sharp" size={24} />
         </View>
         {/* <TextInput style={styles.input} onChangeText={onChangeText} value={text} /> */}
-        <TextInput style={{ borderRadius: 25, width: "100%", paddingLeft: 10 }} onChangeText={(text) => { getSearchSuggestions(text) }} showSoftInputOnFocus={true} />
+        <TextInput style={{ borderRadius: 25, width: "100%", paddingLeft: 10 }} value={search} onChangeText={(text) => { getSearchSuggestions(text) }} showSoftInputOnFocus={true} />
         <View style={{ flexDirection: "row", backgroundColor: "white", padding: 6, borderRadius: 30, alignItems: "center", marginLeft: 5, marginRight: 5 }}>
           <AntDesign name="clockcircle" size={11} style={{ marginRight: 6 }} />
           <Text>Search</Text>
         </View>
       </View>
-      <FlatList
-        data={result}
-        renderItem={({ item, index }) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              style={{
-                width: '100%',
-                justifyContent: 'space-around',
-                // height: 40,
-                paddingVertical: 10,
-                borderBottomColor: '#ccc',
-                borderBottomWidth: 1,
-                // paddingLeft: 15,
-              }}
-              onPress={() => this.setState({ searchKeyword: item.formatted })}>
-              <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 5, marginRight: 5 }}>
-                <Ionicons name="location-sharp" size={24} style={{ paddingRight: 5 }} />
-                <Text style={{ fontWeight: 500 }}>{item.formatted}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        keyExtractor={(item) => item.formatted}
-        style={{
-          width: "90%",
-          marginLeft: "5%",
-          // height: "30%",
-          // backgroundColor: '#eee',
-          //   position: 'absolute',
-          //   top: 65,
-        }}
-      />
+      {showResults && (
+        <FlatList
+          data={result}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={{
+                  width: '100%',
+                  justifyContent: 'space-around',
+                  // height: 40,
+                  paddingVertical: 10,
+                  borderBottomColor: '#ccc',
+                  borderBottomWidth: 1,
+                  // paddingLeft: 15,
+                }}
+                onPress={() => handleSelection(item)}>
+                <View style={{ flexDirection: "row", alignItems: "center", marginLeft: 5, marginRight: 5 }}>
+                  <Ionicons name="location-sharp" size={24} style={{ paddingRight: 5 }} />
+                  <Text style={{ fontWeight: 500 }}>{item.formatted}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item) => item.formatted}
+          style={{
+            width: "90%",
+            marginLeft: "5%",
+            // height: "30%",
+            // backgroundColor: '#eee',
+            //   position: 'absolute',
+            //   top: 65,
+          }}
+        />)
+      }
     </>
   )
 }

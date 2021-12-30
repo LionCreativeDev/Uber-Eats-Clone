@@ -57,7 +57,7 @@ const ItemDetails = ({itemname, estimatedtime, rating}) => (
 export default function RestaurantItem({resturants}) {
     return (
         <>
-            {resturants.map((restaurant, index) => (
+            {resturants.length > 0 && resturants.map((restaurant, index) => (
                  /*style={{marginBottom: 5}}*/
                 <TouchableOpacity activeOpacity={1} key={index}>
                     <View style={styles.card}>
