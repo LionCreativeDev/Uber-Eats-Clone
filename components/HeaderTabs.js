@@ -20,12 +20,12 @@ const HeaderButton = (props) => {
 }
 
 export default function HeaderTabs(props) {
-  const [activeTab, setActiveTab] = useState("Delivery");
+  //const [activeTab, setActiveTab] = useState("Delivery");
 
   return (
     <View style={{ flexDirection: "row", alignSelf: "center" }}>
-      <HeaderButton text={"Delivery"} activeTab={activeTab} setActiveTab={setActiveTab}/>
-      <HeaderButton text={"Pickup"} activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <HeaderButton text={"Delivery"} activeTab={props.activeTab} setActiveTab={props.setActiveTab}/>
+      <HeaderButton text={"Pickup"} activeTab={props.activeTab} setActiveTab={props.setActiveTab}/>
     </View>
   );
 }

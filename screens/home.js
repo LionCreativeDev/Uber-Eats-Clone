@@ -779,6 +779,7 @@ const YELP_API_KEY = "SZjlbAkznak-y7dD0oqcBwYNY5o3ca-N8jdXhF_yJdjtW5BP2CC7VT6OQn
 export default function Home() {
   ////const [resturants, setresturants] = useState(localRestaurants);
   //const [resturants, setresturants] = useState([]);
+  const [activeTab, setActiveTab] = useState("Delivery");
   const [selectedCity, setSelectedCity] = useState("SanDiego");
   const [resturants, setresturants] = useState(business);
 
@@ -794,7 +795,7 @@ export default function Home() {
 
     return fetch(yelpUrl, apiOptions).then((res) => res.json()).then((json) => {
       if(json["businesses"] !== undefined && json["businesses"].length > 0)
-        setresturants(json.businesses);
+        setresturants(json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase())));
       else
         setresturants([]);
     });
@@ -802,12 +803,12 @@ export default function Home() {
 
   useEffect(()=>{
     getRestaurantsFromYelp();
-  }, [selectedCity])
+  }, [selectedCity, activeTab])
 
   return (
     <SafeAreaView style={styles.homecontainer}>
       <View style={styles.optionholder}>
-        <HeaderTabs />
+        <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <SearchBarNew setSelectedCity={setSelectedCity}/>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
