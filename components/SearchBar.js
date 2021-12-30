@@ -13,7 +13,14 @@ export default function SearchBar(props) {
   
   return (
     <View style={{marginTop: 10, flexDirection: "row"}}>
-      <GooglePlacesAutocomplete placeholder="search" styles={{
+      <GooglePlacesAutocomplete 
+      query={{ key: "AIzaSyATiAqIXBARofRD2apZcPQ1eEWZPH4fPV4" }}
+      requestUrl={{
+        url:
+          'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api',
+        useOnPlatform: 'web',
+      }}
+      placeholder="search" styles={{
         textInput: 
         {
           backgroundColor: "#eee", 

@@ -57,9 +57,9 @@ const ItemDetails = ({itemname, estimatedtime, rating}) => (
 export default function RestaurantItem({resturants}) {
     return (
         <>
-            {resturants.map((restaurant) => (
+            {resturants.map((restaurant, index) => (
                  /*style={{marginBottom: 5}}*/
-                <TouchableOpacity activeOpacity={1}>
+                <TouchableOpacity activeOpacity={1} key={index}>
                     <View style={styles.card}>
                         <ItemImage imageurl={restaurant.image_url}/>
                         {/* <Text>Restaurant Item</Text> */}
