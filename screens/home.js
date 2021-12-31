@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Platform, StatusBar } from 'react-native';
-import HeaderTabs from '../components/HeaderTabs';
-import SearchBarNew from '../components/SearchBarNew';
-import Categories from "../components/Categories";
-import BottomTabs from '../components/BottomTabs';
-import RestaurantItem from "../components/RestaurantItem";
+import HeaderTabs from '../components/home/HeaderTabs';
+import SearchBarNew from '../components/home/SearchBarNew';
+import Categories from "../components/home/Categories";
+import BottomTabs from '../components/home/BottomTabs';
+import RestaurantItem from "../components/home/RestaurantItem";
 import { ScrollView } from 'react-native-gesture-handler';
+
+import { Divider } from "react-native-elements";
 
 export const business = [{
   "id": "Sa_qcnc7ZgzSOylf3plTRA",
@@ -812,10 +814,12 @@ export default function Home() {
         <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <SearchBarNew setSelectedCity={setSelectedCity}/>
       </View>
+      <Divider width={1}/>
       <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
         <Categories />
         <RestaurantItem resturants={resturants}/>        
       </ScrollView>
+      <Divider width={1}/>
       <BottomTabs />
     </SafeAreaView>
   );

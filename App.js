@@ -3,6 +3,7 @@ import * as React from 'react';
 // import Constants from 'expo-constants';
 
 import Home from "./screens/home";
+import Details from "./screens/details";
 
 // You can import from local files
 // import AssetExample from './components/AssetExample';
@@ -22,5 +23,6 @@ export default function App() {
       <Text>Universal React with Expo</Text>
     </View>**/
     <Home />
+    // <Details />
   );
 }
