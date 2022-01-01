@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 
-const resturantImage = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/homemade-pizza-index-1591135484.jpg?crop=0.830xw:0.391xh;0.170xw,0.196xh&resize=640:*';
-const resturantTitle = 'Farmhouse kitchen Thai Cuisine';
-const resturantDescription = 'Thai - Comfort Food - $$ - 🎫 - 4⭐ - 100+';
-
-export default function About(){
+export default function About({resturantImage, resturantTitle, resturantDescription}){
     return(
         // // style={{ borderBottomLeftRadius: 25, borderBottomRightRadius: 25, backgroundColor: "#eee" }}
         // <View>
