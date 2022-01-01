@@ -22,7 +22,7 @@ export default function App() {
     >
       <Text>Universal React with Expo</Text>
     </View>**/
-    <Home />
-    // <Details />
+    // <Home />
+    <Details />
   );
 }
