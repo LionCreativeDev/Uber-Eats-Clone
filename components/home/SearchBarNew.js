@@ -29,7 +29,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 // ];
 
 export default function SearchBarNew(props) {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState(props.selectedCity);
   const [cityList, setCityList] = useState([]);
   const [showResults, setshowResults] = useState(false);
 

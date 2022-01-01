@@ -54,12 +54,12 @@ const ItemDetails = ({itemname, estimatedtime, rating}) => (
     </View>
 )
 
-export default function RestaurantItem({resturants}) {
+export default function RestaurantItem({navigation, resturants, ...props}) {
     return (
         <>
             {resturants.length > 0 && resturants.map((restaurant, index) => (
                  /*style={{marginBottom: 5}}*/
-                <TouchableOpacity activeOpacity={1} key={index}>
+                <TouchableOpacity activeOpacity={1} key={index} onPress={()=>{navigation.navigate("Details", restaurant)}}>
                     <View style={styles.card}>
                         <ItemImage imageurl={restaurant.image_url}/>
                         {/* <Text>Restaurant Item</Text> */}

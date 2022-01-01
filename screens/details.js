@@ -42,12 +42,14 @@ const foods = [
     },
 ];
 
-export default function Details(){
+export default function Details({route}){
+    console.log("resturant==>", route.params);
     return(
-        <View>
-            <About resturantImage={resturantImage} resturantTitle={resturantTitle} resturantDescription={resturantDescription}/>
+        <View style={{backgroundColor: "white"}}>
+            {/* <About route={route} resturantImage={resturantImage} resturantTitle={resturantTitle} resturantDescription={resturantDescription}/> */}
+            <About route={route}/>
             <Divider width={1}/>
-            <MenuItem  foods={foods}/>
+            <MenuItem foods={foods}/>
             {/* <Text>Details Screen</Text> */}
         </View>
     )

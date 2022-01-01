@@ -779,12 +779,13 @@ export const business = [{
 //My Yelp Api Key
 const YELP_API_KEY = "SZjlbAkznak-y7dD0oqcBwYNY5o3ca-N8jdXhF_yJdjtW5BP2CC7VT6OQneaAML1EF_Usxm846k3-khmviLYGuFoBeHL_bZ4WvVosvHbTqs9ybX83I495lAjcfy3XnYx";
 
-export default function Home() {
+export default function Home({navigation}) {
   ////const [resturants, setresturants] = useState(localRestaurants);
   //const [resturants, setresturants] = useState([]);
   const [activeTab, setActiveTab] = useState("Delivery");
-  const [selectedCity, setSelectedCity] = useState("SanDiego");
-  const [resturants, setresturants] = useState(business);
+  const [selectedCity, setSelectedCity] = useState("San Diego, CA");
+  const [allResturants, setAllResturants] = useState(business);
+  const [resturants, setresturants] = useState(allResturants.filter((resturant) => resturant.transactions.includes(activeTab.toLowerCase())));
 
   const getRestaurantsFromYelp = () => {
     const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=${selectedCity}`;
@@ -797,27 +798,39 @@ export default function Home() {
     };
 
     return fetch(yelpUrl, apiOptions).then((res) => res.json()).then((json) => {
-      if(json["businesses"] !== undefined && json["businesses"].length > 0)
+      if(json["businesses"] !== undefined && json["businesses"].length > 0){
+        setAllResturants(json.businesses);
         setresturants(json.businesses.filter((business) => business.transactions.includes(activeTab.toLowerCase())));
-      else
+      }
+      else{
+        setAllResturants([]);
         setresturants([]);
+      }
     });
   };
 
+  const filterResturantByType = () => {
+    setresturants(allResturants.filter((business) => business.transactions.includes(activeTab.toLowerCase())));
+  }
+
   useEffect(()=>{
     getRestaurantsFromYelp();
-  }, [selectedCity, activeTab])
+  }, [selectedCity])
+
+  useEffect(()=>{
+    filterResturantByType();
+  }, [activeTab])
 
   return (
     <SafeAreaView style={styles.homecontainer}>
       <View style={styles.optionholder}>
         <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        <SearchBarNew setSelectedCity={setSelectedCity}/>
+        <SearchBarNew selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
       </View>
       <Divider width={1}/>
-      <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 20}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{paddingBottom: 10}}>
         <Categories />
-        <RestaurantItem resturants={resturants}/>        
+        <RestaurantItem resturants={resturants} navigation={navigation}/>
       </ScrollView>
       <Divider width={1}/>
       <BottomTabs />
