@@ -4,9 +4,11 @@ import { Divider } from "react-native-elements";
 import About from '../components/details/about';
 import MenuItem from '../components/details/menuitem';
 
-const resturantImage = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/homemade-pizza-index-1591135484.jpg?crop=0.830xw:0.391xh;0.170xw,0.196xh&resize=640:*';
-const resturantTitle = 'Farmhouse kitchen Thai Cuisine';
-const resturantDescription = 'Thai - Comfort Food - $$ - 🎫 - 4⭐ - 100+';
+import ViewCart from '../components/details/viewcart';
+
+// const resturantImage = 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/homemade-pizza-index-1591135484.jpg?crop=0.830xw:0.391xh;0.170xw,0.196xh&resize=640:*';
+// const resturantTitle = 'Farmhouse kitchen Thai Cuisine';
+// const resturantDescription = 'Thai - Comfort Food - $$ - 🎫 - 4⭐ - 100+';
 
 const foods = [
     {
@@ -42,7 +44,7 @@ const foods = [
     },
 ];
 
-export default function Details({route}){
+export default function Details({route, navigation}){
     console.log("resturant==>", route.params);
     return(
         <View style={{backgroundColor: "white"}}>
@@ -50,6 +52,7 @@ export default function Details({route}){
             <About route={route}/>
             <Divider width={1}/>
             <MenuItem foods={foods}/>
+            <ViewCart />
             {/* <Text>Details Screen</Text> */}
         </View>
     )
