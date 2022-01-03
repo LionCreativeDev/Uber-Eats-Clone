@@ -51,8 +51,8 @@ export default function Details({route, navigation}){
             {/* <About route={route} resturantImage={resturantImage} resturantTitle={resturantTitle} resturantDescription={resturantDescription}/> */}
             <About route={route}/>
             <Divider width={1}/>
-            <MenuItem foods={foods}/>
-            <ViewCart />
+            <MenuItem restaurantName={route.params.name} foods={foods}/>
+            <ViewCart navigation={navigation} restaurantName={route.params.name}/>
             {/* <Text>Details Screen</Text> */}
         </View>
     )
