@@ -31,10 +31,25 @@ let cartReducer = (state = defaultState, action) => {
 
         case "ADD_TO_CART": {
             let newState = { ...state };
-            newState.selectedItems = {
-                items: [...newState.selectedItems.items, action.payload],
-                restaurantName: action.payload.restaurantName,
-            };
+
+            if (action.payload.checkboxValue) {
+                //console.log("ADD_TO_CART called");
+                newState.selectedItems = {
+                    items: [...newState.selectedItems.items, action.payload],
+                    restaurantName: action.payload.restaurantName,
+                };
+            }
+            else {
+                //console.log("REMOVE_FROM_CART called");
+                newState.selectedItems = {
+                    items: [
+                        ...newState.selectedItems.items.filter(
+                            (item) => item.title !== action.payload.title
+                        ),
+                    ],
+                    restaurantName: action.payload.restaurantName,
+                };
+            }
             console.log(newState, "👉");
             return newState;
         }

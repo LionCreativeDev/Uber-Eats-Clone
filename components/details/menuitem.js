@@ -8,10 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 export default function MenuItem({foods, restaurantName}) {
     const dispatch = useDispatch();
 
-    const selectItem = (item) => {
+    const selectItem = (item, checkboxValue) => {
+        console.log("checkboxValue==>",checkboxValue);
       dispatch({
         type: "ADD_TO_CART",
-        payload: {...item, restaurantName: restaurantName},
+        payload: {...item, restaurantName: restaurantName, checkboxValue: checkboxValue},
       });
     }
 
@@ -20,7 +21,7 @@ export default function MenuItem({foods, restaurantName}) {
             {foods.map((food, index) => (
                 <View key={index}>
                     <View style={{ flex: 1, flexDirection: 'row', margin: 10, justifyContent: "space-between", backgroundColor: "#fff", padding: 5, borderRadius: 10, borderColor: "#eee" }}>
-                        <BouncyCheckBox iconStyle={{borderColor: "lightgray", borderRadius: 0}} fillColor='green' onPress={()=>{selectItem(food)}}/>
+                        <BouncyCheckBox iconStyle={{borderColor: "lightgray", borderRadius: 0}} fillColor='green' onPress={(checkboxValue)=>{selectItem(food, checkboxValue)}}/>
                         <View style={{ width: 220, justifyContent: 'space-evenly' }}>
                             <Text style={{ fontSize: 19, fontWeight: "600" }}>{food.title}</Text>
                             <Text>{food.description}</Text>
